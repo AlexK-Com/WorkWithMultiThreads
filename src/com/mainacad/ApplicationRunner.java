@@ -5,6 +5,7 @@ import com.mainacad.model.ConnectionInfo;
 import com.mainacad.multiеhreads.*;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
 
 public class ApplicationRunner {
@@ -12,7 +13,8 @@ public class ApplicationRunner {
 
     public static void main(String[] args) {
 
-        LOG.info("Result is " );
+        Semaphore sem = new Semaphore(10);
+        LOG.info("Program runned! " );
 
 /*
 // рассказ о МАР, потом закомментитиь ОТСЮДА---
@@ -41,14 +43,15 @@ public class ApplicationRunner {
         List<String> connectionIPList = Collections.synchronizedList(new ArrayList<>());
         List<Thread> threads = new ArrayList<>();
 
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 50; i++) {
             ConnectionInfo connectionInfo = ConnectionInfoHelper.getRandomConnectionInfo();
             MultitheadWrapper multitheadWrapper =
-                    new MultitheadWrapper("thread" + i, connectionInfo, connectionIPList);
+                    new MultitheadWrapper(sem, "Thread__" + i, connectionInfo, connectionIPList);
 
             threads.add(multitheadWrapper);
             multitheadWrapper.start();
         }
+/*
 
         while (threadsAlive(threads)){
             try {
@@ -58,8 +61,10 @@ public class ApplicationRunner {
                 e.printStackTrace();
             }
         }
+*/
         LOG.info( connectionIPList.size() + " connection were writed to the file.");
     }
+/*
 
     private static boolean threadsAlive(List<Thread> threads) {
         // boolean isAlive = false;
@@ -70,6 +75,7 @@ public class ApplicationRunner {
         }
         return false;
     }
+*/
 
 
 }
